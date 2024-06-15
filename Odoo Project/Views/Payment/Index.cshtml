@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Odoo_Project.Models.Payment>
+
+@{
+    ViewData["Title"] = "Payments";
+}
+
+<h1>Payments</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Number</th>
+            <th>Payment Date</th>
+            <th>Amount</th>
+            <th>Payment Method</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Number</td>
+                <td>@item.PaymentDate</td>
+                <td>@item.Amount</td>
+                <td>@item.PaymentMethod</td>
+                <td>@item.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Create New</a>

@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body, html {
+            height: 100%;
+        }
+
+        .container {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            cursor: pointer;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            width: 250px; /* Set the width of the box */
+            height: 450px; /* Set the height of the box */
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        }
+
+            .box:hover {
+                background-color: #555;
+                transform: scale(1.05);
+                box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+            }
+
+            .box.invoice {
+                background-color: #007bff; /* Blue */
+            }
+
+            .box.client {
+                background-color: #28a745; /* Green */
+            }
+
+            .box.refund {
+                background-color: #dc3545; /* Red */
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4">
+                <div class="box invoice text-center p-5 bg-primary" onclick="redirectTo('Invoice')">View Invoices</div>
+            </div>
+            <div class="col-md-4">
+                <div class="box client text-center p-5 bg-success" onclick="redirectTo('Client')">View Clients</div>
+            </div>
+            <div class="col-md-4">
+                <div class="box refund text-center p-5 bg-danger" onclick="redirectTo('Refund')">View Refunds</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional, if needed for other Bootstrap components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function redirectTo(page) {
+            if (page === 'Invoice') {
+                window.location.href = '@Url.Action("Index", "Invoice")';
+            } else if (page === 'Client') {
+                window.location.href = '@Url.Action("Index", "Client")';
+            } else if (page === 'Refund') {
+                window.location.href = '@Url.Action("Index", "CreditNote")';
+            }
+        }
+    </script>
+</body>
+</html>

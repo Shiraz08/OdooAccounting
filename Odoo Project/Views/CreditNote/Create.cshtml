@@ -1,0 +1,83 @@
+﻿@model Odoo_Project.Models.CreditNote
+
+@{
+    ViewData["Title"] = "Create Refunds";
+}
+
+<h1>Create Refunds</h1>
+
+<hr />
+<div class="container">
+    <form asp-action="Create">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Number" class="control-label"></label>
+                    <input asp-for="Number" class="form-control" />
+                    <span asp-validation-for="Number" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="InvoiceDate" class="control-label"></label>
+                    <input asp-for="InvoiceDate" class="form-control" />
+                    <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="TaxExcluded" class="control-label"></label>
+                    <input asp-for="TaxExcluded" class="form-control" />
+                    <span asp-validation-for="TaxExcluded" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Tax" class="control-label"></label>
+                    <input asp-for="Tax" class="form-control" />
+                    <span asp-validation-for="Tax" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Total" class="control-label"></label>
+                    <input asp-for="Total" class="form-control" />
+                    <span asp-validation-for="Total" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Payment" class="control-label"></label>
+                    <input asp-for="Payment" class="form-control" />
+                    <span asp-validation-for="Payment" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <select asp-for="Status" class="form-control">
+                        <option value="">Select Status</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Posted">Posted</option>
+                        <option value="Cancelled">Cancelled</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Reconciled">Reconciled</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-3 mb-2">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

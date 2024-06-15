@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Odoo_Project.Models.Invoice>
+
+@{
+    ViewData["Title"] = "Invoice List";
+}
+
+<h1>Invoice List</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Invoice</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().InvoiceDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().TaxExcluded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Tax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Payment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Status)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InvoiceDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaxExcluded)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tax)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            </tr>
+        }
+        <div class="mt-4">
+            <a class="button" href="@Url.Action("Index", "Home")">Go to Main Page</a>
+        </div>
+    </tbody>
+</table>

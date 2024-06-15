@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Odoo_Project.Models.Client>
+
+@{
+    ViewData["Title"] = "Client List";
+}
+
+<h1>Client List</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Client</a>
+</p>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Email)
+                </th>
+                <th>
+                    Photo
+                </th>
+                <th>
+                    Country
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        <img src="data:image/png;base64,@Convert.ToBase64String(item.Photo)" width="50" height="50" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                </tr>
+            }
+            <div class="mt-4">
+                <a class="button" href="@Url.Action("Index", "Home")">Go to Main Page</a>
+            </div>
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No clients found.</p>
+}
