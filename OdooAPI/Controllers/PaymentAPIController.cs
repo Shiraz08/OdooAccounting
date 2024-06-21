@@ -24,24 +24,28 @@ namespace Odoo_Project.Controllers
         [Route("push")]
         public async Task<IActionResult> PushPayment([FromBody] Payment payment)
         {
-            if (payment == null)
-            {
-                return BadRequest("Payment is null.");
-            }
-
-            _context.Add(payment);
-            await _context.SaveChangesAsync();
-
             try
             {
-                await _odooService.PushPaymentAsync(payment);
-                return Ok("Payment pushed to Odoo successfully.");
+                if (payment == null)
+                {
+                    return BadRequest("Payment is null.");
+                }
+
+                _context.Add(payment);
+                await _context.SaveChangesAsync();
+
+                try
+                {
+                    await _odooService.PushPaymentAsync(payment);
+                    return Ok("Payment pushed to Odoo successfully.");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error pushing Payment to Odoo");
+                    return StatusCode(500, "Internal server error: " + ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error pushing Payment to Odoo");
-                return StatusCode(500, "Internal server error: " + ex.Message);
-            }
+            catch(Exception ex) { throw; }
         }
     }
 }

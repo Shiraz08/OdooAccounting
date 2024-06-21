@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Odoo_Project.Models;
+using Odoo_Project.Services.Interface;
 using System.Diagnostics;
 
 namespace Odoo_Project.Controllers
@@ -8,13 +9,13 @@ namespace Odoo_Project.Controllers
     public class CreditNoteController : Controller
     {
         private readonly ILogger<CreditNoteController> _logger;
-        private readonly OdooService _odooService;
+        private readonly IAuthService _authService;
         private readonly ApplicationDbContext _context;
 
-        public CreditNoteController(ILogger<CreditNoteController> logger, OdooService odooService, ApplicationDbContext context)
+        public CreditNoteController(ILogger<CreditNoteController> logger, IAuthService authService, ApplicationDbContext context)
         {
             _logger = logger;
-            _odooService = odooService;
+            _authService = authService;
             _context = context;
         }
         public async Task<IActionResult> Index()
@@ -37,9 +38,8 @@ namespace Odoo_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(refund);
-                await _context.SaveChangesAsync();
-                await _odooService.PushCreditNoteAsync(refund);
+                
+                await _authService.PushCreditNoteAsync(refund);
                 return RedirectToAction(nameof(Index));
             }
             return View(refund);

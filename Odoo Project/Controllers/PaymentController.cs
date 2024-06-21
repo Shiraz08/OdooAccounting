@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Odoo_Project.Models;
+using Odoo_Project.Services.Interface;
 using System.Diagnostics;
 
 namespace Odoo_Project.Controllers
@@ -8,11 +9,11 @@ namespace Odoo_Project.Controllers
     public class PaymentController : Controller
     {
         private readonly ILogger<PaymentController> _logger;
-        private readonly OdooService _odooService;
+        private readonly IAuthService _odooService;
         private readonly ApplicationDbContext _context;
 
 
-        public PaymentController(ILogger<PaymentController> logger, OdooService odooService, ApplicationDbContext context)
+        public PaymentController(ILogger<PaymentController> logger, IAuthService odooService, ApplicationDbContext context)
         {
             _logger = logger;
             _odooService = odooService;
@@ -20,12 +21,22 @@ namespace Odoo_Project.Controllers
         }
 
         public async Task<IActionResult> Index()
-        
         {
-            var invoices = await _context.Invoices.ToListAsync();
-            return View(invoices);
+            try
+            {
+                var payments = await _context.Payments.ToListAsync();
+                if (payments == null || !payments.Any())
+                {
+                    _logger.LogWarning("No payments found.");
+                }
+                return View(payments);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching payments.");
+                return View(new List<Payment>());
+            }
         }
-
 
         public IActionResult Create()
         {
@@ -39,8 +50,6 @@ namespace Odoo_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(payment);
-                await _context.SaveChangesAsync();
                 await _odooService.PushPaymentAsync(payment);
                 return RedirectToAction(nameof(Index));
             }

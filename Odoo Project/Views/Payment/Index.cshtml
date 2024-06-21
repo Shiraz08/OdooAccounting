@@ -6,28 +6,60 @@
 
 <h1>Payments</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Number</th>
-            <th>Payment Date</th>
-            <th>Amount</th>
-            <th>Payment Method</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Number</td>
-                <td>@item.PaymentDate</td>
-                <td>@item.Amount</td>
-                <td>@item.PaymentMethod</td>
-                <td>@item.Status</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Payment</a>
+</p>
 
-<a asp-action="Create" class="btn btn-primary">Create New</a>
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Number)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().PaymentDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().PaymentMethod)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Status)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentMethod)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="mt-4">
+        <a class="button" href="@Url.Action("Index", "Home")">Go to Main Page</a>
+    </div>
+}
+else
+{
+    <p>No payments found.</p>
+}

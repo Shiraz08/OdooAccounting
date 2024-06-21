@@ -11,7 +11,7 @@ namespace Odoo_Project.Models
         public string Country { get; set; }
 
         [NotMapped]
-        public IFormFile PhotoFile { get; set; } 
+        public IFormFile? PhotoFile { get; set; } 
         
     }
 }

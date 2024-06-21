@@ -34,7 +34,7 @@ public class OdooService
             {
                 _database,
                 _userId,
-                _apiKey,  
+                _apiKey,
                 "account.move",
                 "create",
                 new object[]
@@ -54,7 +54,7 @@ public class OdooService
             jsonrpc = "2.0",
             method = "call",
             @params = parameters,
-            id = 1 
+            id = 1
         };
 
         request.AddJsonBody(body);
@@ -100,9 +100,9 @@ public class OdooService
             method = "execute_kw",
             args = new object[]
             {
-                _database,  
-                2,          
-                _apiKey,    
+                _database,
+                2,
+                _apiKey,
                 "account.move",
                 "fields_get",
                 new object[] { },
@@ -140,7 +140,7 @@ public class OdooService
     }
 
 
-    
+
 
     public async Task PushClientAsync(Client client)
     {
@@ -289,82 +289,66 @@ public class OdooService
             Console.WriteLine("Failed to retrieve country ID. Response: " + response.Content);
         }
 
-        return null; 
+        return null;
     }
 
 
 
     public async Task PushPaymentAsync(Payment payment)
     {
-        var client = new RestClient(_baseUrl);
-        var request = new RestRequest("jsonrpc", Method.Post);
-        request.AddHeader("Content-Type", "application/json");
-
-        var parameters = new
+        try
         {
-            service = "object",
-            method = "execute_kw",
-            args = new object[]
+            var client = new RestClient(_baseUrl);
+            var request = new RestRequest("jsonrpc", Method.Post);
+            request.AddHeader("Content-Type", "application/json");
+
+            // Constructing JSON-RPC request with only the payment ID
+            var body = new
             {
-            _database,
-            _userId,
-            _apiKey,
-            "account.payment",
-            "create",
-            new object[]
-            {
-                new
+                jsonrpc = "2.0",
+                method = "call",
+                @params = new
                 {
-                    payment_type = "inbound",  // Assuming this is an inbound payment. Change if necessary.
-                    partner_type = "customer", // Assuming payment is from a customer. Change if necessary.
-                    amount = payment.Amount,
-                    payment_date = payment.PaymentDate.ToString("yyyy-MM-dd"),
-                    journal_id = 1, // Replace with your journal ID
-                    payment_method_id = 1, // Replace with your payment method ID
-                    communication = payment.Number,
-                    partner_id = 1 // Replace with the actual partner ID
+                    service = "object",
+                    method = "execute_kw",
+                    args = new object[]
+                    {
+                    _database,
+                    _userId,
+                    _apiKey,
+                    "account.payment",
+                    "create",
+                    new object[]
+                    {
+                        new
+                        {
+                            id = payment.Id
+                        }
+                    }
+                    }
                 }
-            }
-            }
-        };
+            };
 
-        var body = new
-        {
-            jsonrpc = "2.0",
-            method = "call",
-            @params = parameters,
-            id = 1
-        };
+            request.AddJsonBody(body);
 
-        request.AddJsonBody(body);
+            var response = await client.ExecuteAsync(request);
 
-        var response = await client.ExecuteAsync(request);
-
-        if (response.IsSuccessful)
-        {
-            var responseContent = JsonConvert.DeserializeObject<JObject>(response.Content);
-
-            if (responseContent.ContainsKey("error"))
+            if (response.IsSuccessful)
             {
-                var error = responseContent["error"];
-                Console.WriteLine("Failed to push payment to Odoo. Error: " + error["message"]);
-                Console.WriteLine("Error details: " + error["data"]["debug"]);
+                Console.WriteLine("Payment pushed to Odoo successfully!");
             }
             else
             {
-                var odooPaymentId = responseContent["result"];
-                Console.WriteLine("Payment pushed to Odoo successfully with ID: " + odooPaymentId);
+                Console.WriteLine($"Error pushing payment to Odoo: {response.Content}");
             }
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("Failed to push payment to Odoo. Response: " + response.Content);
-            // Additional logging to capture detailed error information
-            Console.WriteLine("Request Body: " + JsonConvert.SerializeObject(body, Formatting.Indented));
-            Console.WriteLine("Response Status Code: " + response.StatusCode);
-            Console.WriteLine("Response Error Message: " + response.ErrorMessage);
+            Console.WriteLine($"Exception: {ex.Message}");
         }
     }
+
+
 
 
 
@@ -390,7 +374,7 @@ public class OdooService
             {
                 new
                 {
-                    move_type = "out_refund", 
+                    move_type = "out_refund",
                     name = creditNote.Number,
                     invoice_date = creditNote.InvoiceDate.ToString("yyyy-MM-dd")
                 }

@@ -1,11 +1,32 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddHttpClient();
 builder.Services.AddControllers();
+// Register ApplicationDbContext with a connection string
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowSpecificOrigin",
+                      builder =>
+                      {
+                          builder.WithOrigins("https://localhost:7246")
+                                 .AllowAnyHeader()
+                                 .AllowAnyMethod();
+                      });
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<OdooService>();
 
 var app = builder.Build();
 

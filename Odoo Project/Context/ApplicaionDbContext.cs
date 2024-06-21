@@ -12,4 +12,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<Client> Clients { get; set; }
     public DbSet<CreditNote> CreditNotes { get; set; }
+    public DbSet<Payment> Payments { get; set; }
 }

@@ -56,14 +56,17 @@
 <body>
     <div class="container">
         <div class="row justify-content-center align-items-center">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="box invoice text-center p-5 bg-primary" onclick="redirectTo('Invoice')">View Invoices</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="box client text-center p-5 bg-success" onclick="redirectTo('Client')">View Clients</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="box refund text-center p-5 bg-danger" onclick="redirectTo('Refund')">View Refunds</div>
+            </div>
+            <div class="col-md-3">
+                <div class="box refund text-center p-5 bg-secondary" onclick="redirectTo('Payment')">View Payment</div>
             </div>
         </div>
     </div>
@@ -79,6 +82,9 @@
                 window.location.href = '@Url.Action("Index", "Client")';
             } else if (page === 'Refund') {
                 window.location.href = '@Url.Action("Index", "CreditNote")';
+            }
+            else if (page === 'Payment') {
+                window.location.href = '@Url.Action("Index", "Payment")';
             }
         }
     </script>

@@ -20,6 +20,7 @@ namespace Odoo_Project.Controllers
             _context = context;
         }
 
+
         [HttpPost]
         [Route("push")]
         public async Task<IActionResult> PushClient([FromBody] Client client)
@@ -28,18 +29,6 @@ namespace Odoo_Project.Controllers
             {
                 return BadRequest("Client is null.");
             }
-
-            byte[] photoBytes = null;
-
-            if (client.PhotoFile != null && client.PhotoFile.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await client.PhotoFile.CopyToAsync(memoryStream);
-                    photoBytes = memoryStream.ToArray();
-                }
-            }
-            client.Photo = photoBytes;
 
             _context.Add(client);
             await _context.SaveChangesAsync();
